@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 class AlienInvasion:
 
     def __init__(self):
@@ -24,10 +25,11 @@ class AlienInvasion:
         while True:
             self._check_events()
            
-            self._update_screen()
+         
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()
             pygame.display.flip()
+            self._update_screen()
             self.clock.tick(60)
 
     def _check_events(self):
@@ -63,6 +65,12 @@ class AlienInvasion:
     def _fire_bullet(self):
         new_bullet = Bullet(self)
         self.bullets.add(new_bullet)
+    def _update_bullets(self):
+        self.bullets.update()
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+        print(len(self.bullets))
 if __name__ == '__main__':
     ai = AlienInvasion()
     ai.run_game()
